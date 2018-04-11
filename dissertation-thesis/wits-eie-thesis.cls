@@ -56,10 +56,13 @@
 
 \DeclareOption{bib}
 {
-    \AtBeginDocument
-    {
-        \RequirePackage[resetlabels]{multibib}
-        \newcites{bib}{Bibliography}
+    \PassOptionsToPackage{style=ieee, citestyle=numeric-comp}{biblatex}
+    \AtBeginDocument{
+       \@ifpackageloaded{biblatex}{}
+       {
+       	\ClassError{wits-eie-thesis}{biblatex package not loaded even though bib option is supplied}{Add \protect\usepackage{biblatex} to the preamble of your document}
+       }
+       \DeclareFieldFormat{labelnumberwidth}{#1.}
     }
 }
 
@@ -390,8 +393,7 @@ July\or August\or September\or October\or November\or December\fi}
     \newpage
 }
 
-\let\stdbibliography\bibliography
-\newcommand{\references}[2]
+\newcommand{\references}[1]
 {
     \clearpage
     \phantomsection
@@ -399,21 +401,19 @@ July\or August\or September\or October\or November\or December\fi}
     % Added by SPL, 2007-09-07
     % Causes left header to be typeset in ordinary case - not uppercase
     % This should also be added for the bibliography
-    \renewcommand\bibsection{\chapter*{\bibname \@mkboth{{\bibname}}{{\bibname}}}}
-    \addcontentsline{toc}{chapter}{\bibname}
-    \bibliographystyle{#2}
-    \stdbibliography{#1}
+    \printbibliography[title=\bibname \@mkboth{{\bibname}}{{\bibname}}, #1]
 
 }
 \newcommand{\bib}[2]
 {
-    \clearpage
-    \phantomsection
-    \addcontentsline{toc}{chapter}{Bibliography}
-    \bibliographystylebib{#2}
+	\ClassError{wits-eie-thesis}{\protect\bib is deprecated, use standard biblatex commands or call \protect\references inside a \protect\refsegment}{}
+%    \clearpage
+%    \phantomsection
+%    \addcontentsline{toc}{chapter}{Bibliography}
+%    \bibliographystylebib{#2}
 %    \renewcommand\@biblabel[1]{\ensuremath{\bullet}} % bullet items, don't number
-    \renewcommand\@biblabel[1]{} % KJN
-    \bibliographybib{#1}
+%    \renewcommand\@biblabel[1]{} % KJN
+%    \printbibliography[#1]
 }
 
 \renewcommand{\chapter}{\clearpage \thispagestyle{plain} \secdef \EETchap \EETchaps}
