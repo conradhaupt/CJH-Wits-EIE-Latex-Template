@@ -5,12 +5,12 @@
 %%%    version         = "1.9.1",
 %%%    date            = "2017/05/31",
 %%%    filename        = "wits-eie-thesis.cls",
-%%%    address         = "School of Electrical and Information Engineering, 
+%%%    address         = "School of Electrical and Information Engineering,
 %%%                         Wits University, Johannesburg, South Africa",
 %%%    docstring       = "This is a LaTeX style file for the preparation
 %%%                       and submission of theses.  It is heavily based on
 %%%                       the original work of Dean Redelinghuys (eeThesis.cls)
-%%%                       & subsequent modifications by others such as 
+%%%                       & subsequent modifications by others such as
 %%%                       David Vannucci (veeThesisDavid.cls) and Chris Lines.
 %%%
 %%%                       The default font size is 11pt but 12pt is also available.
@@ -57,7 +57,8 @@
 \DeclareOption{bib}
 {
     \PassOptionsToPackage{style=ieee, citestyle=numeric-comp}{biblatex}
-    \AtBeginDocument{
+    \AtBeginDocument
+    {
        \@ifpackageloaded{biblatex}{}
        {
        	\ClassError{wits-eie-thesis}{biblatex package not loaded even though bib option is supplied}{Add \protect\usepackage{biblatex} to the preamble of your document}
@@ -79,7 +80,7 @@
     }
     \addcontentsline{toc}{chapter}{Declaration}
     I declare that this \@thesistype\ is my own, unaided work, except where otherwise acknowledged. It is being submitted for the degree of \@degreetype\ to the University of the Witwatersrand, Johannesburg. It has not been submitted before for any degree or examination to any other university. \par
-    \vspace*{\fill} 
+    \vspace*{\fill}
     {
         \raggedright Signed this \rule{0.8cm}{0.4pt} day of \rule{2.5cm}{0.4pt} 20\rule{0.5cm}{0.4pt} \par \vspace*{2.5cm} % lines lengthened by CRL
         \rule{6cm}{0.4pt}\\
@@ -160,12 +161,12 @@
 {
     \AtBeginDocument
     {
-        % Modified by SPL, 2007-09-07 
-        % For some reason svgnames gives an undefined control sequence error 
+        % Modified by SPL, 2007-09-07
+        % For some reason svgnames gives an undefined control sequence error
         % on my Windows/MikTeX setup
         %\RequirePackage[svgnames,rgb,hyperref]{xcolor}
-        
-        \RequirePackage[dvipsnames,rgb,hyperref]{xcolor}         
+
+        \RequirePackage[dvipsnames,rgb,hyperref]{xcolor}
         \colorlet{linkc}{\@linkc}
         \colorlet{citec}{\@citec}
         \colorlet{urlc}{\@urlc}
@@ -241,7 +242,7 @@ July\or August\or September\or October\or November\or December\fi}
 }
 
 % Modified by SPL, 2007-09-07
-% All colours default to black, available in most colour name sets 
+% All colours default to black, available in most colour name sets
 \newcommand{\@linkc}{Black} % colour for in-document links (e.g. in table of contents)
 \newcommand{\@citec}{Black} % colour for bibliographic citations
 \newcommand{\@urlc}{Black} % colour for hyperlinks to the Internet
@@ -253,7 +254,7 @@ July\or August\or September\or October\or November\or December\fi}
         \hyphenpenalty=10000
         \vspace*{50pt}
         \pdfbookmark[1]{\@title}{TitlePage}
-        {\Huge \bfseries \raggedright \@title \par} 
+        {\Huge \bfseries \raggedright \@title \par}
         \vspace*{40pt}
         \pretolerance=100{\Large \bfseries \@author \par}
         \vspace*{\fill}{\large \scshape \centering \eeThDraft \par}
@@ -305,7 +306,7 @@ July\or August\or September\or October\or November\or December\fi}
 {
     \vspace*{50pt}
     \begin{center}
-    \itshape 
+    \itshape
     \phantomsection
     \addcontentsline{toc}{chapter}{Dedication} % SPL 2009-04-08
 }
