@@ -156,9 +156,11 @@
         \renewcommand{\footrulewidth}{0pt}
     }
 }
-
+\newif\ifwitseie@loadxcolor
 \DeclareOption{colorlinks}
 {
+    % Use a variable to load this package at the end of the class
+    \witseie@loadxcolortrue
     \AtBeginDocument
     {
         % Modified by SPL, 2007-09-07
@@ -166,13 +168,19 @@
         % on my Windows/MikTeX setup
         %\RequirePackage[svgnames,rgb,hyperref]{xcolor}
 
-        \RequirePackage[dvipsnames,rgb,hyperref]{xcolor}
+	% CJH: Commented out so that \witseie@loadxcolor is true and thus loads xcolor at the end of the class
+        %\RequirePackage[dvipsnames,rgb,hyperref]{xcolor}
         \colorlet{linkc}{\@linkc}
         \colorlet{citec}{\@citec}
         \colorlet{urlc}{\@urlc}
     }
     \PassOptionsToPackage{colorlinks,linkcolor=linkc,citecolor=citec,urlcolor=urlc}{hyperref}
 }
+\DeclareOption{nocolorlinks}
+{
+	\witseie@loadxcolorfalse
+}
+\ExecuteOptions{nocolorlinks}
 
 \DeclareOption{twocolumn}{\OptionNotUsed}
 
@@ -529,5 +537,12 @@ July\or August\or September\or October\or November\or December\fi}
 \def\floatpagefraction{0.8}
 \def\textfraction{.2}
 % end KJN
+
+% start CJH
+%% migrated packages to be required outside of \DeclareOption
+\ifwitseie@loadxcolor
+    \RequirePackage[dvipsnames,rgb,hyperref]{xcolor}
+\fi
+% end CJH
 
 \endinput
