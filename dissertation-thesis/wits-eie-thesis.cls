@@ -129,7 +129,13 @@
         % Headings for chapters
         \markboth{}{}
         \renewcommand{\chaptermark}[1]{%
-            \markboth{\chaptername\ \thechapter\ --- #1}{}
+            % Start CJH
+            \ifwitseie@proposal
+                \markboth{Section\ \thechapter\ --- #1}{}
+            \else
+                \markboth{\chaptername\ \thechapter\ --- #1}{}
+            \fi
+            % End CJH
         }
     }
 }
@@ -183,6 +189,33 @@
 \ExecuteOptions{nocolorlinks}
 
 \DeclareOption{twocolumn}{\OptionNotUsed}
+
+% Start CJH
+\newif\ifwitseie@proposal
+\DeclareOption{proposal}
+{
+    \witseie@proposaltrue
+    % Added cleveref aliases for the section names
+    \AtBeginDocument{
+        \@ifpackageloaded{cleveref}
+        {
+            \crefname{chapter}{section}{sections}
+            \Crefname{chapter}{Section}{Sections}
+            \crefname{section}{section}{sections}
+            \Crefname{section}{Section}{Sections}
+            \crefname{subsection}{section}{sections}
+            \Crefname{subsection}{Section}{Sections}
+            \crefname{subsubsection}{section}{sections}
+            \Crefname{subsubsection}{Section}{Sections}
+        }{}
+    }
+}
+\DeclareOption{notproposal}
+{
+        \witseie@proposalfalse
+}
+\ExecuteOptions{notproposal}
+% End CJH
 
 \PassOptionsToClass{a4paper,11pt}{report}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
@@ -425,19 +458,31 @@ July\or August\or September\or October\or November\or December\fi}
 %    \printbibliography[#1]
 }
 
-\renewcommand{\chapter}{\clearpage \thispagestyle{plain} \secdef \EETchap \EETchaps}
+% Start CJH
+\ifwitseie@proposal
+    \renewcommand{\chapter}{\thispagestyle{plain} \secdef \EETchap \EETchaps}
+\else
+    \renewcommand{\chapter}{\clearpage \thispagestyle{plain} \secdef \EETchap \EETchaps}
+\fi
+% End CJH
 \newcommand{\EETchap}[2][?]
 {
     \refstepcounter{chapter}
     \addcontentsline{toc}{chapter}{\protect \numberline{\thechapter} #1}
     \vspace*{50\p@}
     {
-        \parindent \z@ \raggedright
-        \ifnum \c@secnumdepth > \m@ne
-            \LARGE \bfseries \@chapapp{} \thechapter \par
-            \vskip 15\p@
+        % Start CJH
+        \ifwitseie@proposal
+            \huge \bfseries \thechapter\ #2 \par
+        \else
+            \parindent \z@ \raggedright
+            \ifnum \c@secnumdepth > \m@ne
+                \LARGE \bfseries \@chapapp{} \thechapter \par
+                \vskip 15\p@
+            \fi
+            \huge \bfseries #2 \par
         \fi
-        \huge \bfseries #2 \par
+        % End CJH
         \nobreak
         \vskip 30\p@
     }
