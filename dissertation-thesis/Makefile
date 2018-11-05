@@ -1,4 +1,4 @@
-INSTALL_DIR=/usr/share/texmf/tex/latex/
+INSTALL_DIR=/usr/local/texlive/texmf-local/tex/latex/local/wits-eie-thesis/
 
 default: install
 
