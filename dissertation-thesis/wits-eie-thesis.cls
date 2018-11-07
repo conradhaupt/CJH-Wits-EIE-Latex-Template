@@ -67,6 +67,28 @@
     }
 }
 
+% Implements the same floatbarrier for chapters as placeins does for sections ([section] option).
+\DeclareOption{floatchapters}
+{
+    \AtBeginDocument
+    {
+        \@ifpackageloaded{placeins}
+	{
+        \def\@fb@botlist{\@botlist}
+        \def\@fb@topbarrier{\suppressfloats[t]}
+	    \@ifundefined{DeclareOption}{}%
+        {
+            \expandafter\renewcommand\expandafter\chapter\expandafter
+            {\expandafter\@fb@chapFB\chapter}%
+            \newcommand\@fb@chapFB{\FloatBarrier
+            \gdef\@fb@afterHHook{\@fb@topbarrier \gdef\@fb@afterHHook{}}}
+            \g@addto@macro\@afterheading{\@fb@afterHHook}
+            \gdef\@fb@afterHHook{}
+        } % end of \@ifundefined
+	} {}
+    }
+}
+
 \newcommand{\eeThDraft}{\relax}
 \newcommand{\eeThDecl}
 {
