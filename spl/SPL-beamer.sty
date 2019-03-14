@@ -23,14 +23,14 @@
 %                      See own question on texexchange
 %                      Note: this font is pretty much the same as the type1 font Bera Mono
 %                      for use with PDFLaTeX:
-%                      \usepackage[scaled]{beramono}   % the font scaling is controlled in beramono.sty (0.9)
-%                      \usepackage[T1]{fontenc}
+%                      \RequirePackage[scaled]{beramono}   % the font scaling is controlled in beramono.sty (0.9)
+%                      \RequirePackage[T1]{fontenc}
 
 %------------------------------------------------------------------------------
 %                 Font Selection (requires XeLaTeX or LuaTeX
 %------------------------------------------------------------------------------
 \RequireXeTeX % code listings font scales better with XeTeX but pdfLaTeX can be used as well
-\usepackage{fontspec}
+\RequirePackage{fontspec}
 \setmonofont{Bitstream Vera Sans Mono}[Scale=0.9] % for code listings beramono is used
 \newfontfamily\quotefont{Linux Libertine O}[Ligatures=TeX] % selects Libertine for quotation marks
                                                            % more info: http://tex.stackexchange.com/questions/25249/how-do-i-use-a-particular-font-for-a-small-section-of-text-in-my-document?
@@ -41,12 +41,12 @@
 %                               Title Page
 %------------------------------------------------------------------------------
 % for automatically generated year on title slide
-\usepackage{datetime}
+\RequirePackage{datetime}
 \newdateformat{yearonly}{\THEYEAR}
 
 % for figure placement on title page, for using tikzoverlay for general figure
 % placement, and for drawing graphics etc
-\usepackage{tikz}
+\RequirePackage{tikz}
 \usetikzlibrary{decorations.pathmorphing}
 \tikzset{
   every overlay node/.style={
@@ -70,7 +70,7 @@
    \tikz [remember picture,overlay]
     \node at
        ([xshift=-4cm,yshift=2cm]current page.center)
-        {\includegraphics[width=1.5\textwidth]{eie-logo-paler}};
+        {\includegraphics[width=1.5\textwidth]{eie-circuit-logo-pale}};
    \titlepage
 \end{frame}
 
@@ -81,19 +81,14 @@
 %------------------------------------------------------------------------------
 %                             General
 %------------------------------------------------------------------------------
-\usepackage{SPL-code}  % for code listings
-\usepackage{color}
+\RequirePackage{color}
 % colour external links, keep default Beamer theme colour for internal links
 % external link colour is a dark purple gray - so as not to be too distracting
 \definecolor{links}{HTML}{180F6D}%{0B0071}%{2A1B81}
 \hypersetup{colorlinks,linkcolor=,urlcolor=links}
 
-% colour definitions for code listings
-\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
-\definecolor{greencomments}{rgb}{0,0.5,0}
-\definecolor{redstrings}{rgb}{0.9,0.2,0.2} % perhaps change to brown
-
-\usepackage{xspace}
+\RequirePackage{xspace}                                     % inserts spaces after macro expansions (incl in tools)
+\RequirePackage{relsize}                                    % for font sizes relative to the current font
 
 % path for diagrams and figures
 \graphicspath{{./Figures/}}
@@ -101,23 +96,14 @@
 % suppress navigation symbols in beamer
 \setbeamertemplate{navigation symbols}{}
 
-\newcommand{\email}[1]{\href{mailto:#1}{#1}}            % for email hyperlinks
-\usepackage{relsize}                                    % for font sizes relative to the current font
-%\protected\def\CPP{C\nolinebreak[4]\hspace{-.04em}\raisebox{.21ex}{\relsize{-1.5}{\textbf{++}}}\xspace}
-%\protected\def\CPPX{C\nolinebreak[4]\hspace{-.04em}\raisebox{.21ex}{\relsize{-1.5}{\textbf{++}}}} % no space for version numbers
-
-\protected\def\CPlusPlus{C\nolinebreak[4]\hspace{-.04em}\raisebox{.31ex}{\relsize{-1.5}{\textbf{++}}}} % internal definition of C++ for beamer slides, no trailing space, rather use \CPP
-\newcommand{\CPP}{\texorpdfstring{\CPlusPlus}{C++}} % allows PDF bookmarks to use normal text instead of typeset \CPlusPlus, use \CPP{} to add a trailing space
-
-
 %------------------------------------------------------------------------------
 %                        Quotation Environments
 %------------------------------------------------------------------------------
 % definition of "signedquote" and "unsignedquote" environments
 % typeset signed quotations using extra-large quotation marks and a gray background
 % (inspired by tex.stackexchange.com)
-\usepackage{framed}
-\usepackage{amsthm} % pushQED, popQED
+\RequirePackage{framed}
+\RequirePackage{amsthm} % pushQED, popQED
 
 % Make commands for the quotes
 \newcommand*{\openquote}{\tikz[remember picture,overlay,xshift=-16pt,yshift=-3pt]
@@ -128,7 +114,7 @@
 % quoteblock colour based on current theme
 \setbeamercolor{quoteblock}{fg=black,bg=structure.fg!75!black!10!bg}
 
-\usepackage{xparse}
+\RequirePackage{xparse}
 \DeclareDocumentEnvironment{signedquote}{m}
 {
    \begin{beamercolorbox}[sep=0.15em,wd=\textwidth,rounded=true,shadow=true]{quoteblock}
@@ -170,4 +156,36 @@
    \node[decorate,rectangle,fill=yellow,anchor=text]{#1\xspace};%
 }%
 
+
 %------------------------------------------------------------------------------
+%      Put notes on computer screen and project slide (use with Pympress)
+%------------------------------------------------------------------------------
+% See: https://tex.stackexchange.com/questions/232168/normal-text-is-invisible-when-using-beamer-with-notes-and-xelatex
+\newcommand\present{
+\makeatletter  % sets the font color back to theme's default color - otherwise black code in listings goes missing
+\def\beamer@framenotesbegin{% at beginning of slide
+     \usebeamercolor[fg]{normal text}
+      \gdef\beamer@noteitems{}% 
+      \gdef\beamer@notes{}% 
+}
+\makeatother
+
+% produce slides with adjacent notes
+\usepackage{pgfpages} 
+\setbeamertemplate{note page}[plain]
+\setbeameroption{show notes on second screen} % Extend to second screen
+%------------------------------------------------------------------------------
+}
+
+%------------------------------------------------------------------------------
+%                    Shorthand Commands (from SPL-shorthand)
+%------------------------------------------------------------------------------
+% typeset C++, maths symbols, urls, etc. nicely
+\protected\def\CPlusPlus{C\nolinebreak[4]\hspace{-.04em}\raisebox{.21ex}{\relsize{-1.5}{\textbf{++}}}} % internal definition of C++, no trailing space, rather use \CPP
+\newcommand{\CPP}{\texorpdfstring{\CPlusPlus}{C++}} % allows PDF bookmarks to use normal text instead of typeset \CPlusPlus, use \CPP{} to add a trailing space
+\newcommand{\matlab}{\mbox{\textrm{M\kern-.05em\textsc{a\kern-.01em t\kern-.05em\-l\kern-.05em a\kern-.05em b}}}\xspace}
+
+\newcommand{\email}[1]{\href{mailto:#1}{#1}}            % for email hyperlinks
+\newcommand{\sdII}{\url{https://witseie.github.io/software-dev-2/}}
+\newcommand{\sdIII}{\url{https://witseie.github.io/software-dev-3/}}
+\newcommand{\imagecitation}[1]{\raisebox{-1em}{\makebox[0pt][r]{\footnotesize Source: \url{#1}}}}

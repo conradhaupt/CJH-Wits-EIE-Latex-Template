@@ -9,7 +9,13 @@
 % Bera Mono (a monospaced, san serif font) is a good choice for code listings;
 % font expansion not available (see microtype)
 
-\usepackage{listings}
+\RequirePackage{listings}
+
+% colour definitions for code listings
+\RequirePackage{color}
+\definecolor{blue}{rgb}{0.13,0.13,1}
+\definecolor{green}{rgb}{0,0.5,0}
+\definecolor{darkbrown}{HTML}{87422B}
 
 \lstdefinelanguage{JavaScript}{
   keywords={break, case, catch, continue, debugger, default, delete, do, else, finally, for, function, if, in, instanceof, new, return, switch, this, throw, try, typeof, var, void, while, with},
@@ -20,46 +26,50 @@
   sensitive=true
 }
 
-
-
-% base style
+% base style for C++
 \lstdefinestyle{base}{
 basicstyle=\small\ttfamily,
 tabsize=3,
 language=[11]C++,
-%alsolanguage=JavaScript,
-%alsolanguage=HTML,
-morekeywords={override, default, using, final},
+morekeywords={override, default, final},
 showstringspaces=false,
 breaklines=true,
 breakatwhitespace=true,
 captionpos=b,
 moredelim=[il]{//*},
-%escapeinside={//*}{\^^M}, % cannot get this escape sequence to work, \^^M represents a new line return
 escapeinside=\`\`,
 escapechar=\`}
 
-% style modifiers
+% base style modifiers
 \lstdefinestyle{indented}{xleftmargin=1.7em, xrightmargin=1.7em}
-\lstdefinestyle{framed}{frame=tlrb, aboveskip=2em, abovecaptionskip=4mm}
-\lstdefinestyle{with-numbers}{numbers=left,numberstyle=\tiny, xleftmargin=2.5em, xrightmargin=2.5em}
-
-% styles for slides
-\lstdefinestyle{slide}{style=base,escapeinside={(*@}{@*)},commentstyle=\color{greencomments},keywordstyle=\color{bluekeywords}\bfseries,escapechar=\$}
-\lstdefinestyle{numbered-slide}{style=slide,numbers=left,numberstyle=\tiny, numberblanklines=false}
+\lstdefinestyle{framed}{frame=tlrb, framexleftmargin=1mm, aboveskip=2em, abovecaptionskip=4mm}
+\lstdefinestyle{numbered}{numbers=left, numberstyle=\ttfamily\color{black!35}\footnotesize, xleftmargin=2.5em, xrightmargin=2.5em}
+\lstdefinestyle{coloured}{stringstyle=\color{darkbrown}, commentstyle=\color{green}\itshape, keywordstyle=\color{blue}\bfseries}
 
 % styles for documents
-\lstdefinestyle{inline}{style=base, basicstyle=\ttfamily, style=indented, aboveskip=1.2ex, belowskip=0.45ex}
+\lstdefinestyle{inline}{style=base, style=indented, aboveskip=1.2ex, belowskip=0.45ex}
 \lstdefinestyle{output}{style=base, style=framed, keywordstyle={}}
 \lstdefinestyle{frame}{style=base, style=framed}
 \lstdefinestyle{appendix}{style=base, style=framed}
+\lstdefinestyle{number}{style=frame, style=numbered}
 \lstdefinestyle{boxed}{basicstyle=\small\ttfamily, breaklines=true, backgroundcolor=\color{gray!15}, frame=single, rulecolor=\color{gray!50}, xleftmargin=3pt, xrightmargin=3pt, aboveskip=1.2ex, belowskip=0.45ex}
 
-% styles for MCQ
-\lstdefinestyle{mcq}{basicstyle=\small\ttfamily,tabsize=3,language=C++,showstringspaces=false,frame=tlrb,aboveskip=1em,xleftmargin=1em}
-\lstdefinestyle{numbered-mcq}{style=mcq,numbers=left,xleftmargin=4.5em}
+% styles for slides
+\lstdefinestyle{slide}{style=base, style=coloured, escapeinside={(*@}{@*)}, escapechar=\$}
+\lstdefinestyle{numbered-slide}{style=slide, numbers=left, numberstyle=\tiny}
 
-% captions
-\newcommand{\coderef}[1]{Listing~\ref{#1}\xspace}
-\newcommand{\coderefs}[2]{Listings~\ref{#1}\/ and \ref{#2}\xspace}
-\newcommand{\algref}[1]{Algorithm~\ref{#1}\xspace}
+% styles for MCQ
+\lstdefinestyle{mcq}{style=base, style=frame, xrightmargin=2.5em}
+\lstdefinestyle{numbered-mcq}{style=mcq, style=numbered, xleftmargin=4.5em}
+
+% rule after listing
+\newcommand{\coderule}{
+\vspace{-5.5mm}
+\makebox[0pt][l]{%
+  \rule[-1pt]{\textwidth}{.4pt}%
+  \rule[-2.6pt]{4pt}{4pt}
+}%
+\vspace{2mm}
+}
+
+%------------------------------------------------------------------------------
